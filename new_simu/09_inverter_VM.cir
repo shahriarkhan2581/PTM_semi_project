@@ -1,0 +1,24 @@
+* ======================================================================
+* 09 - CMOS INVERTER : switching threshold VM and VTC
+* Sweeps Vin 0->Vdd, plots V(out); VM is where V(out)=V(in).
+* ======================================================================
+.include ptm22lp_param.lib
+
+.param VDD = 0.95
+.param WN  = 1u
+.param WP  = 2u
+.param LN  = 22n
+
+VDDs vdd 0 {VDD}
+MP1  out in vdd vdd pmos L={LN} W={WP}
+MN1  out in 0   0   nmos L={LN} W={WN}
+Vin  in 0 0
+
+.dc Vin 0 {VDD} 0.002
+
+* switching threshold: Vin where Vout = Vin
+.meas dc VM FIND V(in) WHEN V(out)=V(in)
+* small-signal gain at switching point (dVout/dVin is negative -> use MIN)
+.meas dc GAIN MIN deriv(V(out))
+
+.end

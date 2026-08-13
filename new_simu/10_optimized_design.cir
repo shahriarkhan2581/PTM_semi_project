@@ -1,0 +1,40 @@
+* ======================================================================
+* 10 - OPTIMIZED LOW-POWER DESIGN : validation deck
+* Applies the optimized parameter set from the sensitivity study and
+* extracts all metrics for a side-by-side comparison vs nominal.
+*   vth0 = 0.600 V   (nom 0.68858)
+*   toxe = 1.50 nm   (nom 1.40)
+*   eta0 = 0.0105    (nom 0.0105, kept)
+*   nfac = 1.20      (nom 1.60)
+* Target: Ioff <= 1 nA, Ion >= 85% nominal, minimum energy-delay.
+* ======================================================================
+.include ptm22lp_param.lib
+
+* ---- apply optimized values (override the .lib defaults) ----
+.param p_vth0_n = 0.600
+.param p_toxe_n = 1.50e-9
+.param p_eta0_n = 0.0105
+.param p_nfac_n = 1.20
+
+.param VDD  = 0.95
+.param WN   = 1u
+.param LN   = 22n
+.param ICRIT = 100n*WN/LN
+
+M1  d  g  0  0  nmos  L={LN}  W={WN}
+Vg  g  0  0
+Vd  d  0  {VDS}
+
+.step param VDS list 0.05 0.95
+.dc Vg 0 {VDD} 0.005
+
+.meas dc VT     FIND V(g)   WHEN Id(M1)={ICRIT}
+.meas dc V_1nA  FIND V(g)   WHEN Id(M1)=1n
+.meas dc V_10nA FIND V(g)   WHEN Id(M1)=10n
+.meas dc SS     PARAM (V_10nA-V_1nA)*1000
+.meas dc IOFF   FIND Id(M1) AT=0
+.meas dc ION    FIND Id(M1) AT={VDD}
+.meas dc ION_IOFF PARAM ION/IOFF
+
+* Compare the Vds=0.95 row against 01_char_nominal.cir results.
+.end

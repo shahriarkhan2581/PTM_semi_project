@@ -1,0 +1,23 @@
+LTspice 26.0.2 for Windows
+Circuit: D:\MIST\EECE6605\new_simu\18_gate_tunneling.cir
+Start Time: Sat Jul 18 00:46:30 2026
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+Compress1stOrder = true
+Compress2ndOrder = true
+Total elapsed time: 0.058 seconds.
+
+Files loaded:
+D:\MIST\EECE6605\new_simu\18_gate_tunneling.cir
+D:\MIST\EECE6605\new_simu\ptm22lp_param.lib
+
+ig_n: Ig(MN) =1.26565879999e-09 at 0.95
+id_n: Id(MN) =0.000505464558955 at 0.95
+igid_n: IG_N/ID_N=2.5039516175e-06
+ig_p: Ig(MP) =-1.30739641335e-09 at 0
+id_p: Id(MP) =-0.000598462531343 at 0
+igid_p: IG_P/ID_P=2.18459192494e-06
+ig_ratio: IG_N/IG_P=-0.968075777982

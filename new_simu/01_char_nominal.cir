@@ -1,0 +1,35 @@
+* ======================================================================
+* 01 - BASELINE CHARACTERIZATION : 22nm PTM-LP NMOS
+* Validates the nominal operating point (Vt, SS, DIBL, Ion, Ioff).
+* Extracts Id-Vg (linear @Vds=0.05 and saturation @Vds=0.95) + Id-Vd.
+* ======================================================================
+.include ptm22lp_param.lib
+
+.param VDD  = 0.95
+.param WN   = 1u
+.param LN   = 22n
+.param ICRIT = 100n*WN/LN        ; constant-current Vt criterion (=4.545uA)
+
+* ---- device under test ----
+M1  d  g  0  0  nmos  L={LN}  W={WN}
+Vg  g  0  0
+Vd  d  0  {VDS}
+
+* ---- Id-Vg family at two drain biases (linear & saturation) ----
+.step param VDS list 0.05 0.95
+.dc Vg 0 {VDD} 0.005
+
+* ---- automatic metric extraction (one value per Vds step in the log) ----
+.meas dc VT     FIND V(g)     WHEN Id(M1)={ICRIT}          ; threshold (per Vds)
+.meas dc V_1nA  FIND V(g)     WHEN Id(M1)=1n
+.meas dc V_10nA FIND V(g)     WHEN Id(M1)=10n
+.meas dc SS     PARAM (V_10nA-V_1nA)*1000                  ; mV/decade
+.meas dc IOFF   FIND Id(M1)   AT=0                         ; leakage at Vgs=0
+.meas dc ION    FIND Id(M1)   AT={VDD}                     ; on-current at Vgs=Vdd
+
+* --------------------------------------------------------------
+* DIBL:  step1(log)=Vds0.05 -> VT_lin ; step2=Vds0.95 -> VT_sat
+*   DIBL[mV/V] = (VT_lin - VT_sat)/(0.95-0.05)*1000
+* --------------------------------------------------------------
+
+.end

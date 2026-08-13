@@ -1,0 +1,29 @@
+LTspice 26.0.2 for Windows
+Circuit: D:\MIST\EECE6605\new_simu\02_IdVd.cir
+Start Time: Fri Jul 17 16:33:20 2026
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+Compress1stOrder = true
+Compress2ndOrder = true
+.step vgs=0.35
+.step vgs=0.5
+.step vgs=0.65
+.step vgs=0.8
+.step vgs=0.95
+Total elapsed time: 0.495 seconds.
+
+Files loaded:
+D:\MIST\EECE6605\new_simu\02_IdVd.cir
+D:\MIST\EECE6605\new_simu\ptm22lp_param.lib
+
+
+Measurement: id_sat
+  step	Id(M1) 	at
+     1	1.96224078763e-07	0.95
+     2	6.29920441497e-06	0.95
+     3	7.94757361291e-05	0.95
+     4	0.000273278390523	0.95
+     5	0.000505464558955	0.95

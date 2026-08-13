@@ -1,0 +1,44 @@
+* ======================================================================
+* 08 - CMOS INVERTER : propagation delay + switching threshold (VM)
+* Uses NMOS+PMOS from the card. FO-... loaded by an identical inverter cap.
+* .meas extracts tpHL, tpLH, tp(avg) and VM (Vin=Vout crossing).
+* Optional: uncomment a .step line to see delay vs a parameter.
+* ======================================================================
+.include ptm22lp_param.lib
+
+.param VDD  = 0.95
+.param WN   = 1u
+.param WP   = 2u          ; ~2x for symmetric drive (mobility ratio)
+.param LN   = 22n
+
+VDDs  vdd 0 {VDD}
+
+* ---- inverter under test ----
+MP1  out in vdd vdd pmos L={LN} W={WP}
+MN1  out in 0   0   nmos L={LN} W={WN}
+
+* ---- identical fan-out-1 load inverter (gate cap load) ----
+MPL  outl out vdd vdd pmos L={LN} W={WP}
+MNL  outl out 0   0   nmos L={LN} W={WN}
+
+* ---- input pulse ----
+Vin  in 0 PULSE(0 {VDD} 1n 20p 20p 1n 2n)
+
+.tran 0.1p 3n
+
+* ---- propagation delays (50% points) ----
+.meas tran tpHL TRIG V(in)  VAL={VDD/2} TD=0.5n RISE=1
++                 TARG V(out) VAL={VDD/2} FALL=1
+.meas tran tpLH TRIG V(in)  VAL={VDD/2} TD=1.5n FALL=1
++                 TARG V(out) VAL={VDD/2} RISE=1
+.meas tran tp   PARAM (tpHL+tpLH)/2
+
+* ---- switching threshold VM from a slow DC-like ramp (separate .dc below) ----
+* (run 08b for VM if desired)
+
+* ---- to study delay vs a parameter, uncomment ONE line: ----
+* .step param p_vth0_n 0.55 0.82 0.03
+* .step param p_u0_n   0.020 0.050 0.0025
+* .step param p_toxe_n 1.0e-9 2.0e-9 0.1e-9
+
+.end

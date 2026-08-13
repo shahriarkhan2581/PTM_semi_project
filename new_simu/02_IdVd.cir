@@ -1,0 +1,22 @@
+* ======================================================================
+* 02 - OUTPUT CHARACTERISTICS : Id-Vd family (Vgs stepped)
+* Confirms saturation behaviour and Ion at Vgs=Vds=Vdd.
+* ======================================================================
+.include ptm22lp_param.lib
+
+.param VDD = 0.95
+.param WN  = 1u
+.param LN  = 22n
+
+M1  d  g  0  0  nmos  L={LN}  W={WN}
+Vg  g  0  {VGS}
+Vd  d  0  0
+.param VGS = 0.95
+
+* Id-Vd swept, Vgs stepped from 0.35V to 0.95V
+.step param VGS 0.35 0.95 0.15
+.dc Vd 0 {VDD} 0.01
+
+.meas dc ID_SAT FIND Id(M1) AT={VDD}
+
+.end
