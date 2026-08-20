@@ -1,0 +1,25 @@
+* 19 - GATE TUNNELING vs OXIDE THICKNESS : NMOS + PMOS (lock-step)
+.include ptm22lp_param.lib
+.param VDD = 0.95
+.param WN  = 1u
+.param WP  = 2u
+.param LL  = 22n
+
+MN  dn  g  0   0   nmos  L={LL}  W={WN}
+VdN dn  0  {VDD}
+
+Vsup s  0  {VDD}
+MP  dp  g  s   s   pmos  L={LL}  W={WP}
+VdP dp  0  0
+
+Vg  g  0  0
+.step param TOX 0.8e-9 2.0e-9 0.1e-9
+.dc Vg 0 {VDD} 0.05
+
+.meas dc IG_N FIND Ig(MN) AT={VDD}
+.meas dc ID_N FIND Id(MN) AT={VDD}
+.meas dc IG_P FIND Ig(MP) AT=0
+.meas dc ID_P FIND Id(MP) AT=0
+.meas dc IGID_N PARAM IG_N/ID_N
+.meas dc IGID_P PARAM IG_P/ID_P
+.end

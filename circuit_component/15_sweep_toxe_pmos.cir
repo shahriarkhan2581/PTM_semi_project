@@ -1,0 +1,19 @@
+* 15 - PMOS SWEEP : Oxide thickness toxe (TOX), nominal 1.4 nm
+.include ptm22lp_param.lib
+.param VDD = 0.95
+.param WP  = 2u
+.param LP  = 22n
+.param ICRIT = 100n*WP/LP
+M1  d  g  0  0  pmos  L={LP}  W={WP}
+Vg  g  0  0
+Vd  d  0  {-VDD}
+.step param TOX 1.0e-9 2.0e-9 0.1e-9
+.dc Vg 0 {-VDD} -0.005
+.meas dc VT     FIND V(g)   WHEN Id(M1)={-ICRIT}
+.meas dc V_1nA  FIND V(g)   WHEN Id(M1)=-1n
+.meas dc V_10nA FIND V(g)   WHEN Id(M1)=-10n
+.meas dc SS     PARAM (V_1nA-V_10nA)*1000
+.meas dc IOFF   FIND Id(M1) AT=0
+.meas dc ION    FIND Id(M1) AT={-VDD}
+.meas dc ION_IOFF PARAM ION/IOFF
+.end
