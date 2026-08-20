@@ -1,0 +1,45 @@
+* ======================================================================
+* 11 - OPTIMIZED CMOS INVERTER : design-point validation
+* Applies the recommended optimum parameter set (see design study) and
+* extracts VTC/VM, gain, propagation delay (tpHL/tpLH/tp), and leakage.
+*   |VTH0| = 0.62 V   (nom 0.68858 / -0.63745)
+*   nfactor = 1.2     (nom 1.6 / 1.8)
+*   u0_n = 0.048, u0_p = 0.017   (nom 0.035 / 0.011)
+*   toxe = 1.30 nm    (nom 1.40 nm, shared N/P)
+*   eta0 = 0.0105     (nom 0.0105, kept)
+*   rdsw_n = rdsw_p = 125 ohm*um  (nom 180 / 230)
+* ======================================================================
+.include ptm22lp_optimized.lib
+
+.param VDD  = 0.95
+.param WN   = 1u
+.param WP   = 2u
+.param LN   = 22n
+
+VDDs  vdd 0 {VDD}
+
+* ---- inverter under test ----
+MP1  out in vdd vdd pmos L={LN} W={WP}
+MN1  out in 0   0   nmos L={LN} W={WN}
+
+* ---- identical fan-out-1 load inverter (gate cap load) ----
+MPL  outl out vdd vdd pmos L={LN} W={WP}
+MNL  outl out 0   0   nmos L={LN} W={WN}
+
+* ---- input pulse ----
+Vin  in 0 PULSE(0 {VDD} 1n 20p 20p 1n 2n)
+
+.tran 0.1p 3n
+
+* ---- propagation delays (50% points) ----
+.meas tran tpHL TRIG V(in)  VAL={VDD/2} TD=0.5n RISE=1
++                 TARG V(out) VAL={VDD/2} FALL=1
+.meas tran tpLH TRIG V(in)  VAL={VDD/2} TD=1.5n FALL=1
++                 TARG V(out) VAL={VDD/2} RISE=1
+.meas tran tp   PARAM (tpHL+tpLH)/2
+
+* ---- switching energy: integrate supply current over one full cycle ----
+.meas tran Q_cycle INTEG I(VDDs) FROM=0.5n TO=2.5n
+.meas tran E_cycle PARAM -Q_cycle*{VDD}
+
+.end
