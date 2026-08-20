@@ -1,0 +1,24 @@
+LTspice 26.0.2 for Windows
+Circuit: D:\MIST\EECE6605\new_simu\12_optimized_inverter_VM.cir
+Start Time: Thu Aug 20 13:48:10 2026
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+Compress1stOrder = true
+Compress2ndOrder = true
+Warning: toxe, toxp and dtox all given and toxe != toxp + dtox; dtox ignored.
+Warning: toxe, toxp and dtox all given and toxe != toxp + dtox; dtox ignored.
+Total elapsed time: 0.052 seconds.
+
+Files loaded:
+D:\MIST\EECE6605\new_simu\12_optimized_inverter_VM.cir
+D:\MIST\EECE6605\new_simu\ptm22lp_optimized.lib
+
+vm: V(in) =0.46039578757 at 0.460395778423
+vout_lo: V(out) =0.495399588882 at 0.45539578757
+vout_hi: V(out) =0.425461170783 at 0.46539578757
+gain: (Vout_hi-Vout_lo)/0.01=-6.99384180993
+i_leak_low: I(VDDs) =-4.85950790718e-09 at 0
+i_leak_high: I(VDDs) =-4.37626254679e-11 at 0.95

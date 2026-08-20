@@ -29,6 +29,8 @@
 .param p_u0_p   = 0.011
 .param p_eta0_p = 0.0105
 .param p_nfac_p = 1.8
+.param p_rdsw_n = 180
+.param p_rdsw_p = 230
 
 *==================== NMOS =============================================
 .model nmos nmos level = 14
@@ -56,7 +58,7 @@
 +pdiblc1 = 0.001           pdiblc2 = 0.001           pdiblcb = -0.005          drout   = 0.5
 +pvag    = 1e-020          delta   = 0.01            pscbe1  = 8.14e+008       pscbe2  = 1e-007
 +fprout  = 0.2             pdits   = 0.01            pditsd  = 0.23            pditsl  = 2300000
-+rsh     = 5               rdsw    = 180             rsw     = 75              rdw     = 75
++rsh     = 5               rdsw    = {p_rdsw_n}      rsw     = 75              rdw     = 75
 +rdswmin = 0               rdwmin  = 0               rswmin  = 0               prwg    = 0
 +prwb    = 0               wr      = 1               alpha0  = 0.074           alpha1  = 0.005
 +beta0   = 30              agidl   = 0.0002          bgidl   = 2.1e+009        cgidl   = 0.0002
@@ -115,7 +117,7 @@
 +pdiblc1 = 0.001           pdiblc2 = 0.001           pdiblcb = 3.4e-008        drout   = 0.56
 +pvag    = 1e-020          delta   = 0.01            pscbe1  = 8.14e+008       pscbe2  = 9.58e-007
 +fprout  = 0.2             pdits   = 0.08            pditsd  = 0.23            pditsl  = 2300000
-+rsh     = 5               rdsw    = 230             rsw     = 72.5            rdw     = 72.5
++rsh     = 5               rdsw    = {p_rdsw_p}      rsw     = 72.5            rdw     = 72.5
 +rdswmin = 0               rdwmin  = 0               rswmin  = 0               prwg    = 0
 +prwb    = 0               wr      = 1               alpha0  = 0.074           alpha1  = 0.005
 +beta0   = 30              agidl   = 0.0002          bgidl   = 2.1e+009        cgidl   = 0.0002
